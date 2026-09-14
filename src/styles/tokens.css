@@ -1,0 +1,60 @@
+/* =============================================================================
+   W.O.P.R. — WAR OPERATION PLAN RESPONSE
+   Design tokens / palette — 1983 NORAD & WOPR world
+   ============================================================================= */
+:root {
+  /* --- core backgrounds --- */
+  --bg-black: #000000;
+  --bg-void: #010203;
+  --bg-bunker: #07090b;
+  --bg-panel: #0c1013;
+  --bg-steel: #14181c;
+  --bg-steel-2: #1b2126;
+  --line: #232b31;
+  --line-soft: #161c20;
+
+  /* --- phosphor palette (tactical displays) --- */
+  --phos-green: #3dff9a;
+  --phos-green-dim: #1f9e5c;
+  --phos-green-ink: #0a2417;
+  --phos-cyan: #57e8ff;
+  --phos-cyan-dim: #1e94b3;
+  --phos-white: #d7f3ff;
+
+  /* --- friendly / hostile --- */
+  --friendly-blue: #37a6ff;
+  --friendly-green: #46ff8a;
+  --hostile-red: #ff4133;
+  --hostile-red-bright: #ff6b5c;
+  --hostile-dim: #7a1f1a;
+
+  /* --- warning / indicators --- */
+  --warn-amber: #ffb020;
+  --warn-yellow: #ffd23e;
+  --warn-orange: #ff7a2b;
+  --ok-green: #35ff86;
+
+  /* --- WOPR cabinet metal --- */
+  --wopr-metal: #101418;
+  --wopr-metal-2: #181d22;
+  --wopr-metal-edge: #2a333b;
+  --wopr-glow-red: #ff3b2f;
+  --wopr-glow-amber: #ff9a2b;
+  --wopr-glow-green: #37e07a;
+
+  /* --- text --- */
+  --text-hi: #e6f7ff;
+  --text: #a9c3cf;
+  --text-dim: #5c7480;
+  --text-faint: #33454e;
+
+  /* --- fonts --- */
+  --font-mono: 'SF Mono', 'JetBrains Mono', ui-monospace, 'Menlo', 'Consolas',
+    'Liberation Mono', 'Courier New', monospace;
+  --font-cond: 'Arial Narrow', 'Helvetica Neue', system-ui, sans-serif;
+
+  /* --- effects --- */
+  --scan-alpha: 0.5;
+  --bloom: 0.9;
+  --radius: 3px;
+}

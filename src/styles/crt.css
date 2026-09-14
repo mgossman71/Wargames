@@ -1,0 +1,123 @@
+/* =============================================================================
+   CRT overlay — scanlines, vignette, flicker, refresh shimmer, chroma fringe
+   Levels: off | low | film | heavy   (default: film)
+   ============================================================================= */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  overflow: hidden;
+  /* per-level intensity vars */
+  --scan: 0.5;
+  --vig: 0.7;
+  --flick: 0.05;
+  --roll: 1;
+}
+.crt-overlay[data-crt='off'] {
+  display: none;
+}
+.crt-overlay[data-crt='low'] {
+  --scan: 0.3;
+  --vig: 0.5;
+  --flick: 0.02;
+}
+.crt-overlay[data-crt='film'] {
+  --scan: 0.5;
+  --vig: 0.72;
+  --flick: 0.06;
+}
+.crt-overlay[data-crt='heavy'] {
+  --scan: 0.72;
+  --vig: 0.9;
+  --flick: 0.12;
+}
+
+/* layer 1: scanlines */
+.crt-overlay .crt-scanlines {
+  position: absolute;
+  inset: 0;
+  opacity: var(--scan);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.28) 3px,
+    rgba(0, 0, 0, 0) 4px
+  );
+  background-size: 100% 4px;
+  mix-blend-mode: multiply;
+}
+
+/* layer 2: vignette + chroma fringe at edges */
+.crt-overlay .crt-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(125% 105% at 50% 50%, transparent 55%, rgba(0, 0, 0, var(--vig)) 100%),
+    linear-gradient(90deg, rgba(255, 0, 60, 0.05), transparent 6%, transparent 94%, rgba(0, 120, 255, 0.05));
+}
+
+/* layer 3: moving refresh band (subtle vertical roll) */
+.crt-overlay .crt-roll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 22vh;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(150, 255, 210, 0.045) 45%,
+    rgba(150, 255, 210, 0.02) 55%,
+    transparent
+  );
+  animation: crt-roll 7.5s linear infinite;
+  mix-blend-mode: screen;
+  opacity: var(--roll);
+}
+@keyframes crt-roll {
+  0% { transform: translateY(-25vh); }
+  100% { transform: translateY(125vh); }
+}
+
+/* layer 4: flicker (whole overlay alpha) */
+.crt-overlay .crt-flicker {
+  position: absolute;
+  inset: 0;
+  background: rgba(200, 255, 225, var(--flick));
+  animation: crt-flicker 0.12s steps(2, end) infinite;
+  mix-blend-mode: screen;
+}
+@keyframes crt-flicker {
+  0% { opacity: 0.35; }
+  50% { opacity: 1; }
+  100% { opacity: 0.55; }
+}
+
+/* occasional vertical-sync tear (rare, subtle) */
+.crt-overlay .crt-vgate {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 140px,
+    rgba(120, 200, 170, 0.02) 140px 141px
+  );
+  animation: vgate 11s steps(1) infinite;
+  opacity: 0;
+}
+@keyframes vgate {
+  0%, 96.5% { opacity: 0; }
+  97% { opacity: 1; transform: translateY(2px); }
+  97.4% { transform: translateY(-3px); }
+  98% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crt-overlay .crt-roll,
+  .crt-overlay .crt-flicker,
+  .crt-overlay .crt-vgate {
+    animation: none;
+  }
+}

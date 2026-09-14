@@ -1,0 +1,19 @@
+name: wargames-wopr
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: wargames-wopr:latest
+    container_name: wargames-wopr
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    # The image already defines a HEALTHCHECK; surfaced here for `docker compose ps`.
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s

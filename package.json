@@ -1,0 +1,30 @@
+{
+  "name": "wargames-wopr",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "WarGames (1983) — WOPR / Joshua / NORAD interactive experience",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 8080",
+    "assets": "bash scripts/fetch-public-assets.sh"
+  },
+  "dependencies": {
+    "d3-geo": "^3.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/d3-geo": "^3.1.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/topojson-client": "^3.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.7"
+  }
+}

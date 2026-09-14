@@ -1,0 +1,13 @@
+node_modules
+dist
+build
+*.local
+.DS_Store
+*.log
+.vscode
+.idea
+npm-debug.log*
+.env
+.env.*
+public/assets/maps/*.jpg
+public/assets/maps/*.png
