@@ -9,5 +9,3 @@ build
 npm-debug.log*
 .env
 .env.*
-public/assets/maps/*.jpg
-public/assets/maps/*.png

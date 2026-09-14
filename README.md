@@ -125,7 +125,7 @@ serves the static bundle on **port 8080** with SPA routing, gzip, and long-lived
 
 ```
 .
-├── public/assets/         # Blue Marble + audio + textures (large images git-ignored)
+├── public/assets/         # Blue Marble satellite textures (maps/) + asset dirs
 ├── deploy/nginx.conf      # nginx server config (port 8080, SPA, caching)
 ├── src/
 │   ├── audio/             # Web Audio beeps/chirps
@@ -156,11 +156,10 @@ serves the static bundle on **port 8080** with SPA routing, gzip, and long-lived
 - **Fictional data.** All target regions, force data, and event timelines are broad-brush
   cinematic visualizations for a tribute — **not** real or current military information.
 - **Paraphrased text.** Narrative strings are reworded; only short, iconic phrases appear.
-- **Satellite textures are git-ignored** (`public/assets/maps/*.jpg|*.png`) to keep the repo
-  light. The app is fully functional without them (default **film** mode). For a real
-  **satellite** view, place a NASA *Blue Marble* JPEG at
-  `public/assets/maps/blue_marble_next_gen_3600.jpg` before building (public domain — e.g.
-  NASA Visible Earth / USGS). `npm run assets` is the fetcher for these.
+- **Satellite view.** The NASA *Blue Marble* equirectangular textures are committed under
+  `public/assets/maps/` (public domain), so **satellite** and **hybrid** modes work out of
+  the box. Swap in a different Blue Marble JPEG (NASA Visible Earth / USGS) at the same path
+  to change the imagery; `npm run assets` re-fetches them.
 
 ## Disclaimer
 
