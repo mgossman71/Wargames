@@ -96,7 +96,29 @@
     radial-gradient(120% 90% at 50% 0%, rgba(6, 26, 18, 0.5), transparent 55%),
     #030604;
 }
-.terminal__top {
+/* --------------------------- WOPR CONSOLE (the one interface) --------------------------- */
+.wopr-console {
+  position: absolute;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono);
+}
+.wopr-console--full {
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(6, 26, 18, 0.5), transparent 55%),
+    #030604;
+}
+.wopr-console--overlay {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(3, 10, 7, 0.55), rgba(2, 6, 4, 0.95));
+  border-top: 1px solid #16271e;
+  backdrop-filter: blur(3px);
+}
+.wopr-console__top {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -104,16 +126,17 @@
   border-bottom: 1px solid #16271e;
   background: linear-gradient(180deg, #06110c, #040a07);
 }
-.terminal__title {
+.wopr-console__title {
   font-weight: 700;
   letter-spacing: 0.16em;
   font-size: 14px;
   color: var(--phos-green);
   text-shadow: 0 0 10px rgba(61, 255, 154, 0.5);
 }
-.terminal__sub { color: var(--text-dim); font-size: 11px; letter-spacing: 0.18em; }
-.terminal__lamps { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-.terminal__body {
+.wopr-console__sub { color: var(--text-dim); font-size: 11px; letter-spacing: 0.18em; }
+.wopr-console__spacer { flex: 1; }
+.wopr-console__defcon { font-size: 11px; letter-spacing: 0.18em; color: var(--text-dim); }
+.wopr-console__log {
   flex: 1;
   overflow-y: auto;
   padding: 18px 20px 8px;
@@ -121,15 +144,21 @@
   line-height: 1.6;
   white-space: pre-wrap;
 }
-.tl { margin: 0 0 2px; }
-.tl--sys { color: #9fe6c2; }
-.tl--ok { color: var(--ok-green); text-shadow: 0 0 6px rgba(53, 255, 134, 0.35); }
-.tl--warn { color: var(--warn-amber); }
-.tl--err { color: var(--hostile-red-bright); text-shadow: 0 0 8px rgba(255, 107, 92, 0.4); }
-.tl--title { color: #eafff3; font-weight: 700; letter-spacing: 0.1em; margin: 10px 0 4px; text-shadow: 0 0 10px rgba(61, 255, 154, 0.4); }
-.tl--dim { color: var(--text-dim); }
-.tl--user { color: var(--phos-cyan); }
-.tl--big {
+.wopr-console--overlay .wopr-console__log {
+  flex: none;
+  max-height: 132px;
+  padding: 10px 16px 4px;
+  font-size: 13px;
+}
+.wopr-line { margin: 0 0 2px; }
+.wopr-line--sys { color: #9fe6c2; }
+.wopr-line--ok { color: var(--ok-green); text-shadow: 0 0 6px rgba(53, 255, 134, 0.35); }
+.wopr-line--warn { color: var(--warn-amber); }
+.wopr-line--err { color: var(--hostile-red-bright); text-shadow: 0 0 8px rgba(255, 107, 92, 0.4); }
+.wopr-line--title { color: #eafff3; font-weight: 700; letter-spacing: 0.1em; margin: 10px 0 4px; text-shadow: 0 0 10px rgba(61, 255, 154, 0.4); }
+.wopr-line--dim { color: var(--text-dim); }
+.wopr-line--user { color: var(--phos-cyan); }
+.wopr-line--big {
   font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -137,7 +166,38 @@
   text-shadow: 0 0 16px rgba(61, 255, 154, 0.6);
   margin: 8px 0;
 }
-.terminal__inputrow {
+/* The games menu — typed out like everything else, and clickable to select. */
+.wopr-line--menu {
+  cursor: pointer;
+  color: var(--phos-cyan);
+  padding: 1px 8px;
+  margin: 0 0 2px -8px;
+  border-left: 2px solid transparent;
+  transition: background 100ms;
+}
+.wopr-line--menu:hover {
+  background: rgba(61, 255, 154, 0.08);
+  border-left-color: var(--phos-green);
+  color: #b6ffdb;
+  text-shadow: 0 0 8px rgba(61, 255, 154, 0.5);
+}
+.wopr-line--menu:focus-visible {
+  outline: none;
+  background: rgba(61, 255, 154, 0.12);
+  border-left-color: var(--phos-green);
+  color: #b6ffdb;
+  text-shadow: 0 0 8px rgba(61, 255, 154, 0.5);
+}
+.wopr-cursor {
+  display: inline-block;
+  width: 9px;
+  height: 1.05em;
+  margin-top: 6px;
+  background: var(--ok-green);
+  box-shadow: 0 0 8px rgba(61, 255, 154, 0.7);
+  animation: blink 1.05s steps(1, end) infinite;
+}
+.wopr-console__inputrow {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -145,8 +205,8 @@
   border-top: 1px solid #16271e;
   background: #040a07;
 }
-.terminal__prompt { color: var(--ok-green); font-weight: 700; letter-spacing: 0.08em; text-shadow: 0 0 8px rgba(61, 255, 154, 0.5); }
-.terminal__input {
+.wopr-console__prompt { color: var(--ok-green); font-weight: 700; letter-spacing: 0.08em; text-shadow: 0 0 8px rgba(61, 255, 154, 0.5); }
+.wopr-console__input {
   flex: 1;
   background: transparent;
   border: none;
@@ -157,20 +217,14 @@
   letter-spacing: 0.04em;
   caret-color: var(--ok-green);
 }
-.terminal__input::placeholder { color: #23402f; }
-.terminal__quick {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 0 20px 14px;
-  background: #040a07;
-}
-.terminal__quick .btn { padding: 5px 10px; font-size: 11px; }
+.wopr-console__input::placeholder { color: #23402f; }
+.wopr-console__hint { font-size: 10px; letter-spacing: 0.18em; color: var(--text-faint); white-space: nowrap; }
 
 /* --------------------------- WOPR --------------------------- */
 .wopr {
   justify-content: center;
   align-items: center;
+  padding-bottom: 180px; /* clear the persistent console overlay */
   background:
     radial-gradient(90% 70% at 50% 30%, rgba(20, 26, 34, 0.5), transparent 60%),
     #05070a;
@@ -230,10 +284,13 @@
   border: 1px solid #232b31;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
 }
-.wopr-controls { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+
 
 /* --------------------------- BOARD STAGE --------------------------- */
-.stage { position: relative; background: transparent; }
+/* .stage must fill the scene: it is the containing block for the
+   absolutely-positioned top/bottom bars, and a zero-height box would
+   anchor .stage__bottom above the viewport (off-screen). */
+.stage { position: absolute; inset: 0; background: transparent; }
 .stage__dim {
   position: absolute;
   inset: 0;
@@ -265,55 +322,7 @@
   gap: 8px;
 }
 .stage__chip b { color: var(--phos-cyan); }
-.stage__bottom {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 6;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-  background: linear-gradient(180deg, rgba(2, 6, 10, 0.2), rgba(2, 6, 10, 0.92));
-  border-top: 1px solid #1c2a33;
-  backdrop-filter: blur(3px);
-}
-.stage__group { display: flex; align-items: center; gap: 8px; }
-.stage__label { font-size: 10px; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; }
-.seg { display: inline-flex; border: 1px solid #223038; background: rgba(3, 8, 12, 0.7); }
-.seg button {
-  appearance: none;
-  border: none;
-  background: transparent;
-  color: var(--text-dim);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  padding: 6px 10px;
-  cursor: pointer;
-  border-right: 1px solid #1c2a33;
-}
-.seg button:last-child { border-right: none; }
-.seg button[aria-pressed='true'] {
-  color: #02130c;
-  background: linear-gradient(180deg, #2fe07f, #1fae5f);
-  font-weight: 700;
-}
-.stage__spacer { flex: 1; }
-.btn--primary {
-  background: linear-gradient(180deg, #7a1f1a, #4a1512);
-  border-color: #7a1f1a;
-  color: #ffd8d3;
-  font-size: 13px;
-  padding: 9px 18px;
-}
-.btn--primary:hover {
-  border-color: #ff6b5c;
-  box-shadow: inset 0 0 18px rgba(255, 65, 51, 0.3), 0 0 18px rgba(255, 65, 51, 0.4);
-  color: #fff;
-}
+
 
 
 /* GTW target panel */
@@ -327,7 +336,7 @@
   background: linear-gradient(180deg, rgba(4, 10, 14, 0.92), rgba(3, 8, 12, 0.88));
   border: 1px solid #223038;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  max-height: 62vh;
+  bottom: 210px; /* clear the persistent console overlay */
   overflow-y: auto;
 }
 .gtw-panel h3 { margin: 0 0 10px; font-size: 12px; letter-spacing: 0.2em; color: var(--phos-cyan); }
@@ -367,7 +376,7 @@
   gap: 18px;
   pointer-events: none;
   text-align: center;
-  padding: 20px;
+  padding: 20px 20px 210px; /* clear the persistent console overlay */
 }
 .wars__title {
   font-size: clamp(48px, 15vw, 150px);
@@ -397,7 +406,12 @@
   color: #d7f3ff;
   line-height: 1.6;
 }
-.wars__actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; pointer-events: auto; }
+.wars__hint {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
 
 /* --------------------------- TICTACTOE --------------------------- */
 .ttt {
@@ -407,6 +421,7 @@
     radial-gradient(100% 80% at 50% 30%, rgba(10, 26, 18, 0.5), transparent 60%),
     #030604;
   gap: 18px;
+  padding-bottom: 180px; /* clear the persistent console overlay */
 }
 .ttt__title {
   font-weight: 700;
@@ -441,15 +456,14 @@
 .ttt-cell--x { color: var(--phos-green); text-shadow: 0 0 18px rgba(61, 255, 154, 0.7); }
 .ttt-cell--o { color: var(--phos-cyan); text-shadow: 0 0 18px rgba(87, 232, 255, 0.7); }
 .ttt-cell--win { box-shadow: inset 0 0 24px rgba(255, 176, 32, 0.4); border-color: var(--warn-amber); }
-.ttt__controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.ttt__hint { font-size: 11px; letter-spacing: 0.16em; color: var(--text-dim); text-transform: uppercase; }
 
 /* --------------------------- responsive --------------------------- */
 @media (max-width: 620px) {
   .wopr__readouts { grid-template-columns: repeat(2, 1fr); }
   .stage__topbar { flex-wrap: wrap; }
-  .terminal__body,
-  .terminal__inputrow,
-  .terminal__quick {
+  .wopr-console__log,
+  .wopr-console__inputrow {
     padding-left: 14px;
     padding-right: 14px;
   }

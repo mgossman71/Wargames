@@ -60,18 +60,8 @@ export function WoprScene() {
 
           <div className="wopr__vents" />
         </div>
-
-        <div className="wopr-controls">
-          <button className="btn btn--solid" onClick={() => st.go('terminal')}>
-            ◀ RETURN TO TERMINAL
-          </button>
-          <button className="btn" onClick={() => st.go('norad')}>
-            OPEN NORAD WALL ▶
-          </button>
-          <button className="btn" onClick={() => st.toggleSound()}>
-            SOUND: {st.sound ? 'ON' : 'OFF'}
-          </button>
-        </div>
+        {/* No control buttons: the persistent WOPR console handles
+            NORAD / STATUS / ESC — the film has no GUI, only the terminal. */}
       </div>
 
       <style>{`@keyframes msgflicker {0%,100%{opacity:1}48%{opacity:1}50%{opacity:.35}52%{opacity:1}74%{opacity:1}76%{opacity:.6}78%{opacity:1}}`}</style>

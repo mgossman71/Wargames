@@ -48,6 +48,37 @@ export function beep(freq = 440, dur = 0.12, type: OscillatorType = 'square', ga
   }
 }
 
+/**
+ * Very short key-typing blip — WOPR's teletype "clack" while it types.
+ * Deliberately tiny in level and length so it reads as texture, not music.
+ */
+export function tick(): void {
+  const { sound, volume } = useApp.getState()
+  if (!sound || volume <= 0) return
+  const ac = audioCtx()
+  if (!ac) return
+  try {
+    const t = ac.currentTime
+    const osc = ac.createOscillator()
+    const g = ac.createGain()
+    osc.type = 'square'
+    osc.frequency.setValueAtTime(1100 + Math.random() * 900, t)
+    g.gain.setValueAtTime(0.0001, t)
+    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, 0.012 * volume), t + 0.004)
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.035)
+    osc.connect(g)
+    g.connect(ac.destination)
+    osc.start(t)
+    osc.stop(t + 0.045)
+    osc.onended = () => {
+      osc.disconnect()
+      g.disconnect()
+    }
+  } catch {
+    /* audio is best-effort */
+  }
+}
+
 export function chirp(freqFrom = 880, freqTo = 220, dur = 0.5): void {
   const { sound, volume } = useApp.getState()
   if (!sound || volume <= 0) return

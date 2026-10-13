@@ -1,18 +1,18 @@
 import { useApp } from '../state/store'
 import { useBoardHud } from '../components/useBoardHud'
-import { boardAvailable } from '../maps/boardSingleton'
-import { beep } from '../audio'
-import { regionsForSide, type Region } from '../data/regions'
-import { StageControls } from './StageControls'
+import { regionsForSide } from '../data/regions'
 
+/**
+ * GTW planner — the map is the surface behind; the side/region pickers are a
+ * list you choose from (clickable, and also typeable: US, USSR, TARGET ALL,
+ * CLEAR, LAUNCH). No bottom button bar — WOPR's console says "TYPE LAUNCH".
+ */
 export function GtwScene() {
   const st = useApp()
   const hud = useBoardHud()
   const side = st.gtwSide
   const targetSide = side === 'us' ? 'ussr' : 'us'
-  const regions: Region[] = regionsForSide(targetSide)
-
-  const selectAll = () => st.set('gtwRegions', regions.map((r) => r.id))
+  const regions = regionsForSide(targetSide)
 
   return (
     <div className="scene stage">
@@ -51,31 +51,7 @@ export function GtwScene() {
           ))}
         </div>
 
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <button className="btn" onClick={selectAll}>
-            TARGET ALL {side === 'us' ? 'SOVIET' : 'U.S.'} SITES
-          </button>
-          <button className="btn" onClick={() => st.clearRegions()}>
-            CLEAR
-          </button>
-          <button
-            className="btn btn--primary"
-            onClick={() => {
-              beep(120, 0.2)
-              boardAvailable()?.runExchange()
-            }}
-          >
-            ▶ EXECUTE EXCHANGE
-          </button>
-        </div>
-      </div>
-
-      <div className="stage__bottom">
-        <StageControls />
-        <div className="stage__spacer" />
-        <button className="btn" onClick={() => st.go('norad')}>
-          ◀ STAND-BY
-        </button>
+        <div className="gtw-panel__hint">TYPE &nbsp;LAUNCH&nbsp; TO FIRE · TARGET ALL · CLEAR · ESC RETURNS</div>
       </div>
     </div>
   )

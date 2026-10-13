@@ -96,30 +96,33 @@ serves the static bundle on **port 8080** with SPA routing, gzip, and long-lived
 
 ## How to play
 
+The whole experience speaks through **one persistent WOPR console** — the
+green-on-black terminal from the film. WOPR *types* its replies character by
+character (with the classic teletype key-clack when sound is on), and you
+reply by **typing**. There are no on-screen button bars — the conversation is
+the interface.
+
 1. **Boot** — press any key.
-2. **Terminal** — type `HELP` to see all commands.
-3. **NORAD** — watch the display wall and live object tracking.
-4. **GTW** — choose a side and regions, then run a controlled exchange.
-5. **Final simulation** — `FINAL` (or the on-screen button) and watch it resolve.
-6. **Tictactoe** — take on JOSHUA.
+2. **Games menu** — WOPR asks `SHALL WE PLAY A GAME?` and lists the games.
+   Pick by typing a number or name (`2`, `GTW`) — or click a row. WOPR answers
+   `FINE.` and opens it.
+3. **Play** — every scene is driven by the console (commands below). `ESC`
+   returns to the terminal from anywhere; `HELP` re-shows the menu and the
+   commands valid in the current scene.
 
-### Terminal commands
+### Scene commands
 
-| Command        | Aliases                          | Effect                                   |
-| -------------- | -------------------------------- | ---------------------------------------- |
-| `HELP`         | `?`, `h`                         | List available commands.                 |
-| `STATUS`       | `stat`                           | DEFCON, core temp, load, mode, quality.  |
-| `NORAD`        | `n`                              | Open the NORAD display wall.             |
-| `WOPR`         | `machine`                        | View the WOPR cabinet.                   |
-| `GTW`          | `war`, `thermonuclear`           | Open the GTW planner.                    |
-| `FINAL`        | `play`, `start`, `simulation`    | Run the automatic final simulation.      |
-| `TICTACTOE`    | `tictac`, `tic`, `game`          | Start a game (you play second… it wins). |
-| `MAP`          | —                                | Cycle the display style.                 |
-| `CRT`          | —                                | Cycle the CRT/scanline effect.           |
-| `SOUND`        | —                                | Toggle retro audio on/off.               |
-| `QUALITY`      | —                                | Cycle the quality preset.                |
-| `SURRENDER`    | `abort`                          | Abort the exchange and reset.            |
-| `RESET`        | `clear`                          | Full system reset.                       |
+| Scene         | Commands |
+| ------------- | -------- |
+| **Terminal**  | `1`–`6` or game name · `STATUS` · `SOUND` · `CRT` · `MAP` · `QUALITY` · `SURRENDER` · `RESET` |
+| **NORAD**     | `FINAL` · `STATUS` · `TERMINAL` · `ESC` |
+| **GTW**       | `US` / `USSR` · `TARGET ALL` · `CLEAR` · `LAUNCH` · `STAND-BY` · `ESC` |
+| **Final sim** | `RESET` (stand down) · `NORAD` · `ESC` |
+| **Tic-tac-toe** | `1`–`9` (play a cell) · `AGAIN` · `TERMINAL` · `ESC` |
+| **WOPR**      | `NORAD` · `STATUS` · `TERMINAL` · `ESC` |
+
+Global commands that work everywhere: `HELP`, `STATUS`, `TERMINAL`, `SOUND`,
+`CRT`, `MAP`, `QUALITY`, and `ESC`.
 
 ## Project structure
 

@@ -1,11 +1,11 @@
-import { useApp } from '../state/store'
 import { useBoardHud } from '../components/useBoardHud'
-import { boardAvailable } from '../maps/boardSingleton'
-import { beep } from '../audio'
-import { StageControls } from './StageControls'
 
+/**
+ * NORAD display wall — the board (world map + live traffic) is the surface
+ * behind this scene. No button bar: WOPR's console carries the commands
+ * (FINAL, HELP, ESC…) and says so when the wall opens.
+ */
 export function NoradScene() {
-  const st = useApp()
   const hud = useBoardHud()
 
   return (
@@ -23,21 +23,6 @@ export function NoradScene() {
             <span className="stage__chip">PHASE <b>{hud.phase.toUpperCase()}</b></span>
           </>
         )}
-      </div>
-
-      <div className="stage__bottom">
-        <StageControls />
-        <div className="stage__spacer" />
-        <button
-          className="btn btn--primary"
-          onClick={() => {
-            beep(150, 0.18)
-            boardAvailable()?.startFinalSimulation()
-            st.go('final')
-          }}
-        >
-          ▶ INITIATE FINAL SIMULATION
-        </button>
       </div>
     </div>
   )

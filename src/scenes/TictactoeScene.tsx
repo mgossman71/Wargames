@@ -1,65 +1,20 @@
-import { useState } from 'react'
-import { useApp } from '../state/store'
+import { useTtt, tttWinner } from '../state/ttt'
 
-type Cell = 'X' | 'O' | null
-type Board = Cell[]
-
-const LINES: number[][] = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8],
-  [0, 3, 6], [1, 4, 7], [2, 5, 8],
-  [0, 4, 8], [2, 4, 6],
-]
-
-function winner(b: Board): { w: Cell; line: number[] } | null {
-  for (const l of LINES) {
-    const [a, c, d] = l
-    if (b[a] && b[a] === b[c] && b[a] === b[d]) return { w: b[a], line: l }
-  }
-  return null
-}
-
-function best(b: Board, isX: boolean): { score: number; move: number } {
-  const win = winner(b)
-  if (win) return { score: win.w === 'X' ? 10 : -10, move: -1 }
-  const empty: number[] = []
-  b.forEach((v, i) => { if (!v) empty.push(i) })
-  if (empty.length === 0) return { score: 0, move: -1 }
-  let bestScore = isX ? -Infinity : Infinity
-  let bm = empty[0]
-  for (const i of empty) {
-    const nb = b.slice()
-    nb[i] = isX ? 'X' : 'O'
-    const s = best(nb, !isX).score
-    if (isX ? s > bestScore : s < bestScore) { bestScore = s; bm = i }
-  }
-  return { score: bestScore, move: bm }
-}
-
-const EMPTY: Board = Array(9).fill(null)
-
+/**
+ * Tic-tac-toe — the film's board game, shown as a green grid. Cells may be
+ * clicked, or typed (1-9); JOSHUA plays second and announces each move into
+ * the WOPR console. NEW GAME is typed: AGAIN.
+ */
 export function TictactoeScene() {
-  const st = useApp()
-  const [board, setBoard] = useState<Board>(EMPTY)
-
-  const win = winner(board)
+  const board = useTtt((s) => s.board)
+  const move = useTtt((s) => s.move)
+  const win = tttWinner(board)
   const full = board.every(Boolean)
   const winLine = win?.line ?? []
 
-  function place(i: number) {
-    if (winner(board) || board[i]) return
-    const nb = board.slice()
-    nb[i] = 'X'
-    const w = winner(nb)
-    if (!w && !nb.every(Boolean)) {
-      const mv = best(nb, false).move
-      if (mv >= 0) nb[mv] = 'O'
-    }
-    setBoard(nb)
-  }
-
-  let status = 'Your move (X). I always play second.'
-  if (win) status = win.w === 'X' ? 'You win this time. Impressive.' : 'I win. As you know I do.'
-  else if (full) status = 'A draw. We both survived. A rare outcome.'
+  let status = 'YOUR MOVE (X). I ALWAYS PLAY SECOND.'
+  if (win) status = win.w === 'X' ? 'YOU WIN THIS TIME. IMPRESSIVE.' : 'I WIN. AS I ALWAYS DO.'
+  else if (full) status = 'A DRAW. WE BOTH SURVIVED. A RARE OUTCOME.'
 
   return (
     <div className="scene ttt">
@@ -73,21 +28,14 @@ export function TictactoeScene() {
             key={i}
             className={`ttt-cell${c === 'X' ? ' ttt-cell--x' : ''}${c === 'O' ? ' ttt-cell--o' : ''}${winLine.includes(i) ? ' ttt-cell--win' : ''}`}
             disabled={!!c || !!win || full}
-            onClick={() => place(i)}
+            onClick={() => move(i)}
             aria-label={`cell ${i + 1}`}
           >
             {c === 'X' ? 'X' : c === 'O' ? 'O' : ''}
           </button>
         ))}
       </div>
-      <div className="ttt__controls">
-        <button className="btn" onClick={() => setBoard(EMPTY)}>
-          ↻ NEW GAME
-        </button>
-        <button className="btn btn--solid" onClick={() => st.go('terminal')}>
-          ◀ RETURN TO TERMINAL
-        </button>
-      </div>
+      <div className="ttt__hint">CLICK A CELL OR TYPE 1-9 · AGAIN FOR A NEW GAME · ESC RETURNS</div>
     </div>
   )
 }
