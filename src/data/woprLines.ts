@@ -23,16 +23,23 @@ export const GAMES: GameDef[] = [
 export const gameMenu = (): SpeakItem[] =>
   GAMES.map((g) => ({ text: `${g.num}. ${g.name}`, kind: 'menu' as const, ref: g.key }))
 
-export const GREETING: SpeakItem[] = [
-  { text: 'GREETINGS, PROFESSOR.', kind: 'sys' },
-  { text: 'I HAVE BEEN TRAINING ON GAME STRATEGIES FOR A NUMBER OF YEARS.', kind: 'dim' },
-  { text: '', kind: 'dim' },
+/** The menu block — "SHALL WE PLAY A GAME?" and the game list.
+ *  WOPR re-types this fresh every time the human returns to the terminal. */
+export const MENU: SpeakItem[] = [
   { text: 'SHALL WE PLAY A GAME?', kind: 'big' },
   { text: '', kind: 'dim' },
   { text: 'AVAILABLE GAMES:', kind: 'title' },
   ...gameMenu(),
   { text: '', kind: 'dim' },
   { text: 'ENTER A GAME NUMBER OR NAME. (HELP FOR COMMANDS)', kind: 'warn' },
+]
+
+/** Boot greeting — the preamble to the menu. */
+export const GREETING: SpeakItem[] = [
+  { text: 'GREETINGS, PROFESSOR.', kind: 'sys' },
+  { text: 'I HAVE BEEN TRAINING ON GAME STRATEGIES FOR A NUMBER OF YEARS.', kind: 'dim' },
+  { text: '', kind: 'dim' },
+  ...MENU,
 ]
 
 export const ENTER_NORAD: SpeakItem[] = [

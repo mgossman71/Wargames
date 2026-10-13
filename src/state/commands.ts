@@ -8,7 +8,7 @@ import { boardAvailable } from '../maps/boardSingleton'
 import { beep } from '../audio'
 import { speak, echo, clearWopr, type SpeakItem } from './wopr'
 import { useTtt } from './ttt'
-import { GREETING, ENTER_NORAD, ENTER_GTW, ENTER_WOPR, ENTER_TTT, ENTER_FINAL, gameMenu } from '../data/woprLines'
+import { GREETING, MENU, ENTER_NORAD, ENTER_GTW, ENTER_WOPR, ENTER_TTT, ENTER_FINAL, gameMenu } from '../data/woprLines'
 import { resolvePreset, autoDetect } from './quality'
 import { MODE_LABEL } from '../maps/mapStyles'
 import { regionsForSide } from '../data/regions'
@@ -46,7 +46,8 @@ export function selectByRef(ref: string): void {
   selectGame(ref)
 }
 
-/** The universal return — typed command or ESC. */
+/** The universal return — typed command or ESC. Wipes the old exchange
+ *  and re-presents the menu: a fresh conversation every time you come back. */
 export function toTerminal(): void {
   const st = useApp.getState()
   if (st.mode === 'terminal') {
@@ -54,9 +55,10 @@ export function toTerminal(): void {
     return
   }
   st.go('terminal')
+  clearWopr()
   speak([
     { text: 'RETURNING TO THE TERMINAL.', kind: 'ok' },
-    { text: 'SHALL WE PLAY A GAME?', kind: 'warn' },
+    ...MENU,
   ])
 }
 

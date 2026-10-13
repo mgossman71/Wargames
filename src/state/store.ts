@@ -38,11 +38,14 @@ interface AppState {
   simPhase: SimPhase
   finalSpeed: number
   wopr: WoprStatus
+  /** true once WOPR has greeted the human at the terminal (first arrival) */
+  greeted: boolean
 
   // actions
   go: (mode: Mode) => void
   back: () => void
   set: <K extends keyof AppState>(key: K, value: AppState[K]) => void
+  setGreeted: (v: boolean) => void
   setCrt: (c: CrtLevel) => void
   cycleCrt: () => void
   toggleSound: () => void
@@ -81,6 +84,7 @@ const initial = {
     hours: 412.6,
     defcon: 5,
   } as WoprStatus,
+  greeted: false,
 }
 
 export const useApp = create<AppState>((set, get) => ({
@@ -89,6 +93,7 @@ export const useApp = create<AppState>((set, get) => ({
   go: (mode) => set((s) => ({ mode, previousMode: s.mode === mode ? s.previousMode : s.mode })),
   back: () => set((s) => ({ mode: s.previousMode })),
   set: (key, value) => set({ [key]: value } as Partial<AppState>),
+  setGreeted: (v) => set({ greeted: v }),
 
   setCrt: (c) => set({ crt: c }),
   cycleCrt: () => {

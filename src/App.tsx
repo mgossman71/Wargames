@@ -38,9 +38,12 @@ export default function App() {
   useEffect(() => { boardAvailable()?.setMapMode(mapMode) }, [mapMode])
   useEffect(() => { boardAvailable()?.setQualityLevel(quality) }, [quality])
 
-  // WOPR greets once, on first arrival at the terminal (after boot).
+  // WOPR greets exactly once, on first arrival at the terminal (after boot).
   useEffect(() => {
-    if (mode === 'terminal' && useWopr.getState().lines.length === 0) speak(GREETING)
+    if (mode === 'terminal' && !useApp.getState().greeted) {
+      useApp.getState().setGreeted(true)
+      speak(GREETING)
+    }
   }, [mode])
 
   // ESC is the universal "return to the terminal" — the film has no buttons.

@@ -107,7 +107,8 @@ the interface.
    Pick by typing a number or name (`2`, `GTW`) — or click a row. WOPR answers
    `FINE.` and opens it.
 3. **Play** — every scene is driven by the console (commands below). `ESC`
-   returns to the terminal from anywhere; `HELP` re-shows the menu and the
+   returns to the terminal from anywhere; each return wipes the console and
+   WOPR re-presents the games menu fresh. `HELP` re-shows the menu and the
    commands valid in the current scene.
 
 ### Scene commands
